@@ -6,6 +6,7 @@ const PORT = 3001;
 const amqplib = require('amqplib');
 let channel, connection;
 
+const amqpServer = 'amqp://localhost:5672';
 const taskQueue = 'task_queue';
 const resultQueue = 'result_queue';
 
@@ -14,11 +15,10 @@ connect();
 // покдлючение к rabbitMQ
 async function connect() {
     try {
-        const amqpServer = 'amqp://localhost:5672';
         connection = await amqplib.connect(amqpServer);
         channel = await connection.createChannel();
 
-        console.log('Connected to the "amqp://localhost:5672"');
+        console.log(`Connected to the ${amqpServer}`);
 
         await channel.assertQueue(resultQueue);
         await channel.assertQueue(taskQueue);
